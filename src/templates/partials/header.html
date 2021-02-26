@@ -39,14 +39,14 @@
             {% comment %} <a class="dropdown-item" href="{% url 'dictionaries:index' %}">
               Dictionaries
             </a>
-            <div class="dropdown-divider"></div>
+            <div class="dropdown-divider"></div> {% endcomment %}
 
             <a class="dropdown-item" href="{% url 'notebooks:index' %}">
               Notebooks
             </a>
             <div class="dropdown-divider"></div>
 
-            <a class="dropdown-item" href="{% url 'pollers:index' %}">
+            {% comment %} <a class="dropdown-item" href="{% url 'pollers:index' %}">
               Pollers
             </a>
             <div class="dropdown-divider"></div> {% endcomment %}
