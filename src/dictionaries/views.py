@@ -37,21 +37,23 @@ def new(request):
             if not PyDictionary().meaning(keyword):
                 return HttpResponse(f'\'{keyword}\' is meaningless. Please try again.')
 
-            meaning = ''
+            meaningStr = ''
             noun = PyDictionary().meaning(keyword).get('Noun')
-            meaning += (f'- Noun: {str(noun)[1:-1]}\n' if noun else '').replace('\'', '')
+            meaningStr += f'- Noun: {str(noun)[1:-1]}\n' if noun else ''
+            meaningStr = meaningStr.replace('\'', '')
 
             verb = PyDictionary().meaning(keyword).get('Verb')
-            meaning += (f'- Verb: {str(verb)[1:-1]}' if verb else '').replace('\'', '')
+            meaningStr += f'- Verb: {str(verb)[1:-1]}' if verb else ''
+            meaningStr = meaningStr.replace('\'', '')
 
-            syno = PyDictionary().synonym(keyword)
-            synonym = str(syno)[1:-1].replace('\'', '') if syno else ''
+            synonym = PyDictionary().synonym(keyword)
+            synonymStr = str(synonym)[1:-1].replace('\'', '') if synonym else ''
 
-            anto = PyDictionary().antonym(keyword)
-            antonym = str(anto)[1:-1].replace('\'', '') if anto else ''
+            antonym = PyDictionary().antonym(keyword)
+            antonymStr = str(antonym)[1:-1].replace('\'', '') if antonym else ''
 
-            new_word = Word(keyword=keyword, meaning=meaning,
-                            synonym=synonym, antonym=antonym)
+            new_word = Word(keyword=keyword, meaning=meaningStr,
+                            synonym=synonymStr, antonym=antonymStr)
             new_word.save()
 
             return HttpResponse('Save successfully.')

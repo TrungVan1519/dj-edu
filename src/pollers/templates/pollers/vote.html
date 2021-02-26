@@ -1,0 +1,87 @@
+{% extends 'layouts/base.html' %} 
+
+{% block content %}
+<div class="container">
+  <h1 class="text-center">{{ question.text }}</h1>
+
+  <div class="row">
+    <div class="col-6">
+      <form>
+        {% csrf_token %} 
+        {% for choice in question.choice_set.all %}
+        <div class="form-check">
+          <input
+            type="radio"
+            name="choice"
+            class="form-check-input"
+            id="choice{{ forloop.counter }}"
+            value="{{ choice.id }}"
+          />
+          <label class="form-check-label" for="choice{{ forloop.counter }}"
+            >{{ choice.text }}</label
+          >
+        </div>
+        {% endfor %}
+
+        <a class="btn btn-outline-secondary" href="{% url 'pollers:index' %}"
+          >Back to pollers</a
+        >
+        <button
+          type="button"
+          id="btn-vote"
+          class="btn btn-outline-primary"
+          data-question-id="{{ question.id }}"
+        >
+          Vote
+        </button>
+      </form>
+    </div>
+    <div class="col-6">
+      <ul class="list-group">
+        {% for choice in question.choice_set.all %}
+        <li class="list-group-item" data-choice-id="{{ choice.id }}">
+          {{ choice.text }}
+          <span class="badge badge-info float-right"
+            >{{ choice.votes }} vote{{ choice.votes | pluralize }}</span
+          >
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  window.addEventListener("DOMContentLoaded", (event) => {
+    $("#btn-vote").click(function (e) {
+      e.preventDefault();
+
+      const questionId = $(this).data("question-id");
+      $.ajax({
+        type: "POST",
+        url: `/pollers/${questionId}/vote/`,
+        data: {
+          choice: $("input[name='choice']:checked").val(),
+          csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),
+        },
+        success: function ({
+          selected_choice_id,
+          selected_choice_text,
+          selected_choice_votes,
+          error_message,
+        }) {
+          if (error_message) {
+            return alert(error_message);
+          }
+
+          $(`[data-choice-id='${selected_choice_id}']`)
+            .children(".badge-info")
+            .text(`${selected_choice_votes} votes`);
+
+          alert(`+1 vote for ${selected_choice_text}.`);
+        },
+      });
+    });
+  });
+</script>
+{% endblock %}

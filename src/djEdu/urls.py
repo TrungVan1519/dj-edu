@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('dictionaries/', include('dictionaries.urls')),
     path('notebooks/', include('notebooks.urls')),
+    path('pollers/', include('pollers.urls')),
     path('urlshorteners/', include('urlshorteners.urls')),
     path('', views.index, name='index'),
 ]
