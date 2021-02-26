@@ -1,0 +1,151 @@
+{% extends 'layouts/base.html' %} 
+
+{% block content %}
+<div class="container-fluid">
+  <!-- Button trigger modal -->
+  <button
+    type="button"
+    class="btn btn-outline-success"
+    data-toggle="modal"
+    data-target="#modal-shorten-link"
+  >
+    Shorten Link
+  </button>
+  <!-- Button trigger modal -->
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover m-3">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">UUID</th>
+          <th scope="col">Link</th>
+          <th scope="col">Shortened Link</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if urls|length > 0 %} 
+          {% for url in urls %}
+          <tr>
+            <th scope="row">{{ url.id }}</th>
+            <td>{{ url.uuid }}</td>
+            <td>{{ url.link }}</td>
+            <td>
+              <a
+                href="{% url 'urlshorteners:go' url.uuid %}"
+                target="_blank"
+                rel="noopener noreferrer"
+                >{% url 'urlshorteners:go' url.uuid %}</a
+              >
+            </td>
+            <td class="text-center">
+              <button
+                type="button"
+                class="btn btn-outline-danger btn-delete-shorten-link"
+                data-url-id="{{ url.id }}"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+          {% endfor %} 
+        
+        {% else %}
+        <td colspan="5" class="text-center">No shortened link available.</td>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="modal-shorten-link"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modal-shorten-linkLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-shorten-linkLabel">
+          Enter your link:
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          {% csrf_token %}
+          <div class="form-group">
+            <textarea class="form-control" name="link"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" id="btn-ok">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+
+<script>
+  window.addEventListener("DOMContentLoaded", (event) => {
+    $("#modal-shorten-link").on("show.bs.modal", function (event) {
+      $("textarea[name='link']").val("");
+
+      $("#btn-ok").click(function (e) {
+        e.preventDefault();
+
+        link = $("textarea[name='link']").val();
+        if (link === "") {
+          return alert("Your link is empty. Please try again.");
+        }
+
+        $.ajax({
+          type: "POST",
+          url: "/urlshorteners/new/",
+          data: {
+            link,
+            csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),
+          },
+          success: function (uid) {
+            alert(`Save successfully:
+              - ${location.origin}${location.pathname}${uid}
+              - ${location.href}${uid}`);
+            location.reload();
+          },
+        });
+      });
+    });
+
+    $(".btn-delete-shorten-link").click(function (e) {
+      e.preventDefault();
+
+      const urlId = $(this).data("url-id");
+      $.ajax({
+        type: "GET",
+        url: `/urlshorteners/${urlId}/delete/`,
+        data: {},
+        success: function (response) {
+          alert(response);
+          location.reload();
+        },
+      });
+    });
+  });
+</script>
+{% endblock content %}
