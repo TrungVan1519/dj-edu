@@ -8,7 +8,7 @@ from .models import ShortenedUrl
 
 def index(request):
     return render(request, 'urlshorteners/index.html',  {
-        'urls': ShortenedUrl.objects.all().order_by('id').reverse(),
+        'shortened_urls': ShortenedUrl.objects.all().order_by('id').reverse(),
     })
 
 
@@ -17,8 +17,8 @@ def new(request):
         uid = str(uuid.uuid4())[:5]
         link = request.POST.get('link')
 
-        shortened_url = ShortenedUrl(uuid=uid, link=link)
-        shortened_url.save()
+        new_shortened_url = ShortenedUrl(uuid=uid, link=link)
+        new_shortened_url.save()
 
         return HttpResponse(uid)
 

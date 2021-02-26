@@ -27,26 +27,28 @@
       </thead>
       <tbody>
         {% if words|length > 0 %} 
-        {% for word in words %}
-        <tr>
-          <th scope="row">{{ word.id }}</th>
-          <td>{{ word.keyword }}</td>
-          <td>{{ word.meaning }}</td>
-          <td>{{ word.synonym }}</td>
-          <td>{{ word.antonym }}</td>
-          <td class="text-center">
-            <button
-              type="button"
-              class="btn btn-outline-danger btn-delete-word"
-              data-word-id="{{ word.id }}"
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
-        {% endfor %} 
+          {% for word in words %}
+          <tr>
+            <th scope="row">{{ word.id }}</th>
+            <td>{{ word.keyword }}</td>
+            <td>{{ word.meaning }}</td>
+            <td>{{ word.synonym }}</td>
+            <td>{{ word.antonym }}</td>
+            <td class="text-center">
+              <button
+                type="button"
+                class="btn btn-outline-danger btn-delete-word"
+                data-word-id="{{ word.id }}"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+          {% endfor %} 
+
         {% else %}
         <td colspan="6" class="text-center">No words available.</td>
+        
         {% endif %}
       </tbody>
     </table>

@@ -25,8 +25,8 @@
         </tr>
       </thead>
       <tbody>
-        {% if urls|length > 0 %} 
-          {% for url in urls %}
+        {% if shortened_urls|length > 0 %} 
+          {% for url in shortened_urls %}
           <tr>
             <th scope="row">{{ url.id }}</th>
             <td>{{ url.uuid }}</td>
@@ -53,6 +53,7 @@
         
         {% else %}
         <td colspan="5" class="text-center">No shortened link available.</td>
+        
         {% endif %}
       </tbody>
     </table>

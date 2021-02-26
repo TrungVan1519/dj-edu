@@ -1,14 +1,11 @@
-{% extends 'layouts/base.html' %} 
-
-{% block content %}
+{% extends 'layouts/base.html' %} {% block content %}
 <div class="container">
   <h1 class="text-center">{{ question.text }}</h1>
 
   <div class="row">
-    <div class="col-6">
+    <div class="col-md-6 my-3">
       <form>
-        {% csrf_token %} 
-        {% for choice in question.choice_set.all %}
+        {% csrf_token %} {% for choice in question.choice_set.all %}
         <div class="form-check">
           <input
             type="radio"
@@ -36,23 +33,103 @@
         </button>
       </form>
     </div>
-    <div class="col-6">
+    <div class="col-md-6 my-3">
       <ul class="list-group">
         {% for choice in question.choice_set.all %}
         <li class="list-group-item" data-choice-id="{{ choice.id }}">
-          {{ choice.text }}
+          <p>{{ choice.text }}</p>
           <span class="badge badge-info float-right"
             >{{ choice.votes }} vote{{ choice.votes | pluralize }}</span
           >
         </li>
         {% endfor %}
       </ul>
+
+      <div id="myChart"></div>
     </div>
   </div>
 </div>
 
 <script>
   window.addEventListener("DOMContentLoaded", (event) => {
+    // ZingChart
+    var myConfig = {
+      type: "pie",
+      plot: {
+        borderColor: "#2B313B",
+        borderWidth: 5,
+        valueBox: {
+          placement: "out",
+          text: "%t\n%npv%",
+        },
+        tooltip: {
+          fontSize: "18",
+          padding: "5 10",
+          text: "%npv%",
+        },
+        animation: {
+          effect: 2,
+          method: 5,
+          speed: 900,
+          sequence: 1,
+          delay: 1000,
+        },
+      },
+      source: {
+        text: "DjangoEdu.com",
+        fontColor: "#8e99a9",
+      },
+      title: {
+        fontColor: "#8e99a9",
+        text: "The Choice Rating:",
+        align: "left",
+        offsetX: 10,
+        fontSize: 25,
+      },
+      subtitle: {
+        offsetX: 10,
+        offsetY: 10,
+        fontColor: "#8e99a9",
+        fontSize: "16",
+        text: "Based on your option and everybody in the World.",
+        align: "left",
+      },
+      plotarea: {
+        margin: "80 0 0 0",
+      },
+      series: [
+        // Format value of series
+        // {
+        //   text: "Chrome",
+        //   values: [56.94],
+        //   backgroundColor: "#FF7965",
+        //   detached: true,
+        // },
+      ],
+    };
+
+    function updateZingChart() {
+      // reset data
+      myConfig.series = [];
+
+      $("[data-choice-id]").each(function (index, element) {
+        myConfig.series.push({
+          text: $(this).children("p").text(),
+          values: [+$(this).children("span").text().replace(" votes", "")], // ZingChart will automatically calculate value ratio
+          backgroundColor:
+            "#" + Math.floor(Math.random() * 16777215).toString(16),
+          detached: true,
+        });
+      });
+
+      zingchart.render({
+        id: "myChart",
+        data: myConfig,
+      });
+    }
+
+    updateZingChart();
+
     $("#btn-vote").click(function (e) {
       e.preventDefault();
 
@@ -75,8 +152,10 @@
           }
 
           $(`[data-choice-id='${selected_choice_id}']`)
-            .children(".badge-info")
+            .children("span")
             .text(`${selected_choice_votes} votes`);
+
+          updateZingChart();
 
           alert(`+1 vote for ${selected_choice_text}.`);
         },

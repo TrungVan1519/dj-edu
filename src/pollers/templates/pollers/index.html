@@ -5,7 +5,7 @@
   <div class="row">
     {% if questions|length > 0 %}
       {% for question in questions %}
-      <div class="col-3">
+      <div class="col-md-6 my-3">
         <div class="card">
           <div class="card-body">
             <h3 class="card-text">{{ question.text }}</h3>
@@ -16,8 +16,10 @@
         </div>
       </div>
       {% endfor %}
+
     {% else %}
     <div class="col-12 text-center"><h3>No poll questions available.</h3></div>
+    
     {% endif %}
   </div>
 </div>
