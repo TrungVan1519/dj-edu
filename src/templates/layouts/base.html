@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -5,14 +7,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Django Edu</title>
 
-    {% comment %} Bootstrap 4.x {% endcomment %}
+    {% comment %} Animate {% endcomment %}
+    <link rel="stylesheet" href="{% static 'vendors/animate.min.css' %}" />
+
+    {% comment %} Font-awesome {% endcomment %}
     <link
       rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous"
+      href="{% static 'vendors/fontawesome-5.15.2/css/all.min.css' %}"
     />
-    {% comment %} Bootstrap 4.x {% endcomment %}
+
+    {% comment %} Fancy Box {% endcomment %}
+    <link
+      rel="stylesheet"
+      href="{% static 'vendors/fancybox-3/dist/jquery.fancybox.min.css' %}"
+    />
+
+    {% comment %} Bootstrap {% endcomment %}
+    <link
+      rel="stylesheet"
+      href="{% static 'vendors/bootstrap-4.5.3/css/bootstrap.min.css' %}"
+    />
+
+    {% comment %} Custom CSS {% endcomment %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
   </head>
   <body>
     {% include 'partials/header.html' %}
@@ -21,26 +38,31 @@
     </main>
     {% include 'partials/footer.html' %}
 
-    {% comment %} Bootstrap 4.x {% endcomment %}
-    <script
-      src="https://code.jquery.com/jquery-3.1.1.min.js"
-      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
-    {% comment %} Bootstrap 4.x {% endcomment %}
+    {% comment %} WOW {% endcomment %}
+    <script src="{% static 'vendors/wow.min.js' %}"></script>
+
+    {% comment %} JQuery {% endcomment %}
+    <script src="{% static 'vendors/jquery-3.5.1.min.js' %}"></script>
+
+    {% comment %} Isotope {% endcomment %}
+    <script src="{% static 'vendors/isotope.pkgd.min.js' %}"></script>
 
     {% comment %} Zing Chart {% endcomment %}
-    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
-    {% comment %} Zing Chart {% endcomment %}
+    <script src="{% static 'vendors/zingchart-2.9.2/zingchart.min.js' %}"></script>
+
+    {% comment %} GSAP {% endcomment %}
+    <script src="{% static 'vendors/gsap-3.6.0/minified/gsap.min.js' %}"></script>
+
+    {% comment %} Font-awesome {% endcomment %}
+    <script src="{% static 'vendors/fontawesome-5.15.2/js/all.min.js' %}"></script>
+
+    {% comment %} Fancy Box {% endcomment %}
+    <script src="{% static 'vendors/fancybox-3/dist/jquery.fancybox.min.js' %}"></script>
+
+    {% comment %} Bootstrap {% endcomment %}
+    <script src="{% static 'vendors/bootstrap-4.5.3/js/bootstrap.min.js' %}"></script>
+
+    {% comment %} Custom JS {% endcomment %}
+    <script src="{% static 'js/base.js' %}"></script>
   </body>
 </html>

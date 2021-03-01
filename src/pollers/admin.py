@@ -2,6 +2,10 @@ from django.contrib import admin
 
 from .models import Question, Choice
 
+admin.AdminSite.site_header = 'Django Edu Admin Site'
+admin.AdminSite.site_title = 'Admin Area'
+admin.AdminSite.index_title = 'Welcome, admin'
+
 
 class ChoiceInline(admin.TabularInline):
     model = Choice
