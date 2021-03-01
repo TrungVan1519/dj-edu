@@ -2,6 +2,9 @@
 
 {% block content %}
 <div class="container-fluid">
+  <!-- Alert -->
+  {% include 'reusables/alert.html' %}
+
   <!-- Button trigger modal -->
   <button
     type="button"
@@ -53,7 +56,7 @@
         
         {% else %}
         <td colspan="5" class="text-center">No shortened link available.</td>
-        
+
         {% endif %}
       </tbody>
     </table>
@@ -104,7 +107,30 @@
 <!-- Modal -->
 
 <script>
-  window.addEventListener("DOMContentLoaded", (event) => {
+  document.addEventListener("DOMContentLoaded", (event) => {
+    function alertMessage(message) {
+      // update alert
+      const alert = $(".alert");
+      alert.removeClass("d-none");
+      alert.children("span").text(message);
+      alert.children("button").click(function (e) {
+        e.preventDefault();
+
+        alert.children("span").text("");
+        alert.addClass("d-none");
+
+        location.reload();
+      });
+
+      // reload page automatically
+      setTimeout(function () {
+        alert.children("span").text("");
+        alert.addClass("d-none");
+
+        location.reload();
+      }, 5000);
+    }
+
     $("#modal-shorten-link").on("show.bs.modal", function (event) {
       $("textarea[name='link']").val("");
 
@@ -113,7 +139,7 @@
 
         link = $("textarea[name='link']").val();
         if (link === "") {
-          return alert("Your link is empty. Please try again.");
+          return alertMessage("Your link is empty. Please try again.");
         }
 
         $.ajax({
@@ -124,10 +150,9 @@
             csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),
           },
           success: function (uid) {
-            alert(`Save successfully:
+            alertMessage(`Save successfully:
               - ${location.origin}${location.pathname}${uid}
               - ${location.href}${uid}`);
-            location.reload();
           },
         });
       });
@@ -142,8 +167,7 @@
         url: `/urlshorteners/${urlId}/delete/`,
         data: {},
         success: function (response) {
-          alert(response);
-          location.reload();
+          alertMessage(response);
         },
       });
     });

@@ -2,6 +2,9 @@
 
 {% block content %}
 <div class="container-fluid">
+  <!-- Alert -->
+  {% include 'reusables/alert.html' %}
+
   <!-- Button trigger modal -->
   <button
     type="button"
@@ -137,7 +140,30 @@
 <!-- Modal -->
 
 <script>
-  window.addEventListener("DOMContentLoaded", (event) => {
+  document.addEventListener("DOMContentLoaded", (event) => {
+    function alertMessage(message) {
+      // update alert
+      const alert = $(".alert");
+      alert.removeClass("d-none");
+      alert.children("span").text(message);
+      alert.children("button").click(function (e) {
+        e.preventDefault();
+
+        alert.children("span").text("");
+        alert.addClass("d-none");
+
+        location.reload();
+      });
+
+      // reload page automatically
+      setTimeout(function () {
+        alert.children("span").text("");
+        alert.addClass("d-none");
+
+        location.reload();
+      }, 5000);
+    }
+
     $("#modal-dictionary").on("show.bs.modal", function (event) {
       $("input[name='keyword']").val("");
       $("textarea[name='meaning']").val("");
@@ -156,7 +182,7 @@
           },
           success: function ({ keyword, meaning, synonym, antonym }) {
             if (!meaning) {
-              return alert(`'${keyword}' is meaningless. Please try again.`);
+              return alertMessage(`'${keyword}' is meaningless. Please try again.`);
             }
 
             let meaningStr = "";
@@ -184,8 +210,7 @@
             csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),
           },
           success: function (response) {
-            alert(response);
-            location.reload();
+            alertMessage(response);
           },
         });
       });
@@ -200,8 +225,7 @@
         url: `/dictionaries/${wordId}/delete/`,
         data: {},
         success: function (response) {
-          alert(response);
-          location.reload();
+          alertMessage(response);
         },
       });
     });

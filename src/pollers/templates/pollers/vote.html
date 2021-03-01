@@ -2,6 +2,9 @@
 
 {% block content %}
 <div class="container">
+  <!-- Alert -->
+  {% include 'reusables/alert.html' %}
+  
   <h1 class="text-center">{{ question.text }}</h1>
 
   <div class="row">
@@ -54,7 +57,7 @@
 </div>
 
 <script>
-  window.addEventListener("DOMContentLoaded", (event) => {
+  document.addEventListener("DOMContentLoaded", (event) => {
     // ZingChart
     var myConfig = {
       type: "pie",
@@ -133,6 +136,25 @@
 
     updateZingChart();
 
+    function alertMessage(message) {
+      // update alert
+      const alert = $(".alert");
+      alert.removeClass("d-none");
+      alert.children("span").text(message);
+      alert.children("button").click(function (e) {
+        e.preventDefault();
+
+        alert.children("span").text("");
+        alert.addClass("d-none");
+      });
+
+      // reload page automatically
+      setTimeout(function () {
+        alert.children("span").text("");
+        alert.addClass("d-none");
+      }, 5000);
+    }
+
     $("#btn-vote").click(function (e) {
       e.preventDefault();
 
@@ -151,7 +173,7 @@
           error_message,
         }) {
           if (error_message) {
-            return alert(error_message);
+            return alertMessage(error_message);
           }
 
           $(`[data-choice-id='${selected_choice_id}']`)
@@ -160,7 +182,7 @@
 
           updateZingChart();
 
-          alert(`+1 vote for ${selected_choice_text}.`);
+          alertMessage(`+1 vote for ${selected_choice_text}.`);
         },
       });
     });
