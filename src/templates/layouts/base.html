@@ -6,7 +6,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Django Edu</title>
-    <link rel="shortcut icon" href="{% static 'img/favicons/favicon.ico' %}" type="image/x-icon">
+    <link
+      rel="shortcut icon"
+      href="{% static 'img/favicons/favicon.ico' %}"
+      type="image/x-icon"
+    />
 
     {% comment %} Animate {% endcomment %}
     <link rel="stylesheet" href="{% static 'vendors/animate.min.css' %}" />
@@ -34,9 +38,7 @@
   </head>
   <body>
     <header>{% include 'partials/header.html' %}</header>
-    <main class="min-vh-100">
-      {% block content %}{% endblock content %}
-    </main>
+    <main class="min-vh-100">{% block content %}{% endblock content %}</main>
     <footer>{% include 'partials/footer.html' %}</footer>
 
     {% comment %} WOW {% endcomment %}

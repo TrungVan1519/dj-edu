@@ -5,16 +5,41 @@
   <!-- Alert -->
   {% include 'reusables/alert.html' %}
 
-  <!-- Button trigger modal -->
+  <!-- Button trigger modal search-word-meaning -->
   <button
     type="button"
     class="btn btn-outline-success"
     data-toggle="modal"
-    data-target="#modal-dictionary"
+    data-target="#modal-search-word-meaning"
   >
-    Search word
+    Search word meaning
   </button>
-  <!-- Button trigger modal -->
+  <!-- Button trigger modal search-word-meaning -->
+
+  <div class="input-group w-50 float-right">
+    <div class="input-group-append">
+      <!-- Button trigger modal translate-paragraph -->
+      <button
+        type="button"
+        class="btn btn-outline-success"
+        data-toggle="modal"
+        data-target="#modal-translate-paragraph"
+      >
+        Translate paragraph
+      </button>
+      <!-- Button trigger modal translate-paragraph -->
+    </div>
+    <select
+      class="custom-select"
+      id="selected-language"
+      name="selected-language"
+    >
+      <option value="vi" selected>into vietnamese</option>
+      {% for key, value in languages.items %}
+      <option value="{{ key }}">{{ value }}</option>
+      {% endfor %}
+    </select>
+  </div>
 
   <div class="table-responsive">
     <table class="table table-bordered table-hover mt-3">
@@ -48,29 +73,29 @@
             </td>
           </tr>
           {% endfor %} 
-
+        
         {% else %}
         <td colspan="6" class="text-center">No words available.</td>
-        
+
         {% endif %}
       </tbody>
     </table>
   </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal search-word-meaning -->
 <div
   class="modal fade"
-  id="modal-dictionary"
+  id="modal-search-word-meaning"
   tabindex="-1"
   role="dialog"
-  aria-labelledby="modal-dictionaryLabel"
+  aria-labelledby="modal-search-word-meaningLabel"
   aria-hidden="true"
 >
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-dictionaryLabel">
+        <h5 class="modal-title" id="modal-search-word-meaningLabel">
           Enter your keyword:
         </h5>
         <button
@@ -137,11 +162,76 @@
     </div>
   </div>
 </div>
-<!-- Modal -->
+<!-- Modal search-word-meaning -->
+
+<!-- Modal translate-paragraph -->
+<div
+  class="modal fade"
+  id="modal-translate-paragraph"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modal-translate-paragraph"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-translate-paragraph">
+          Enter Paragraph:
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="paragraph" class="col-form-label">Paragraph:</label>
+            <textarea
+              class="form-control"
+              id="paragraph"
+              name="paragraph"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="translated-paragraph" class="col-form-label"
+              >Translated Paragraph:</label
+            >
+            <textarea
+              class="form-control"
+              name="translated-paragraph"
+              id="translated-paragraph"
+              readonly="readonly"
+            ></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          id="btn-translate-paragraph"
+        >
+          Translate
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal translate-paragraph -->
 
 <script>
   document.addEventListener("DOMContentLoaded", (event) => {
-    $("#modal-dictionary").on("show.bs.modal", function (event) {
+    $("#modal-search-word-meaning").on("show.bs.modal", function (event) {
       $("input[name='keyword']").val("");
       $("textarea[name='meaning']").val("");
       $("textarea[name='synonym']").val("");
@@ -152,14 +242,16 @@
 
         $.ajax({
           type: "POST",
-          url: "/dictionaries/search/",
+          url: "{% url 'dictionaries:search' %}",
           data: {
             keyword: $("input[name='keyword']").val().toLowerCase(),
             csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),
           },
           success: function ({ keyword, meaning, synonym, antonym }) {
             if (!meaning) {
-              return alertMessage(`'${keyword}' is meaningless. Please try again.`);
+              return alertMessage(
+                `'${keyword}' is meaningless. Please try again.`
+              );
             }
 
             let meaningStr = "";
@@ -181,13 +273,37 @@
 
         $.ajax({
           type: "POST",
-          url: "/dictionaries/new/",
+          url: "{% url 'dictionaries:new' %}",
           data: {
             keyword: $("input[name='keyword']").val().toLowerCase(),
             csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),
           },
           success: function (response) {
             alertMessageAndReload(response);
+          },
+        });
+      });
+    });
+
+    $("#modal-translate-paragraph").on("show.bs.modal", function (event) {
+      $("textarea[name='paragraph']").val("");
+      $("textarea[name='translated-paragraph']").val("");
+
+      $("#btn-translate-paragraph").click(function (e) {
+        e.preventDefault();
+
+        $.ajax({
+          type: "POST",
+          url: "{% url 'dictionaries:translate' %}",
+          data: {
+            paragraph: $("textarea[name='paragraph']").val(),
+            selectedLanguage: $("select[name='selected-language']").val(),
+            csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),
+          },
+          success: function ({ translated_paragraph }) {
+            $("textarea[name='translated-paragraph']").val(
+              translated_paragraph
+            );
           },
         });
       });

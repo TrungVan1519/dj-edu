@@ -128,10 +128,10 @@
         e.preventDefault();
 
         const noteId = $("input[name='note-id']").val();
-        let url = "/notebooks/new/";
+        let url = "{% url 'notebooks:new' %}";
 
         if (noteId === "") {
-          url = "/notebooks/new/";
+          url = "{% url 'notebooks:new' %}";
         } else {
           url = `/notebooks/${noteId}/update/`;
         }

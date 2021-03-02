@@ -121,7 +121,7 @@
 
         $.ajax({
           type: "POST",
-          url: "/urlshorteners/new/",
+          url: "{% url 'urlshorteners:new' %}",
           data: {
             link,
             csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),

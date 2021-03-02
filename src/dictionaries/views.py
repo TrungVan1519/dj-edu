@@ -1,6 +1,7 @@
 import json
 
 from PyDictionary import PyDictionary
+from googletrans import Translator, LANGUAGES
 
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404
@@ -11,6 +12,7 @@ from .models import Word
 def index(request):
     return render(request, 'dictionaries/index.html', {
         'words': Word.objects.all().order_by('id').reverse(),
+        'languages': LANGUAGES,
     })
 
 
@@ -64,3 +66,12 @@ def delete(request, id):
     word.delete()
 
     return HttpResponse('Delete successfully.')
+
+
+def translate(request):
+    if request.method == 'POST':
+        return JsonResponse({
+            "translated_paragraph": Translator().translate(
+                request.POST.get('paragraph'),
+                dest=request.POST.get('selectedLanguage')).text,
+        })
