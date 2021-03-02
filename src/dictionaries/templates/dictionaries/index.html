@@ -141,29 +141,6 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", (event) => {
-    function alertMessage(message) {
-      // update alert
-      const alert = $(".alert");
-      alert.removeClass("d-none");
-      alert.children("span").text(message);
-      alert.children("button").click(function (e) {
-        e.preventDefault();
-
-        alert.children("span").text("");
-        alert.addClass("d-none");
-
-        location.reload();
-      });
-
-      // reload page automatically
-      setTimeout(function () {
-        alert.children("span").text("");
-        alert.addClass("d-none");
-
-        location.reload();
-      }, 5000);
-    }
-
     $("#modal-dictionary").on("show.bs.modal", function (event) {
       $("input[name='keyword']").val("");
       $("textarea[name='meaning']").val("");
@@ -210,7 +187,7 @@
             csrfmiddlewaretoken: $("input[name='csrfmiddlewaretoken']").val(),
           },
           success: function (response) {
-            alertMessage(response);
+            alertMessageAndReload(response);
           },
         });
       });
@@ -225,7 +202,7 @@
         url: `/dictionaries/${wordId}/delete/`,
         data: {},
         success: function (response) {
-          alertMessage(response);
+          alertMessageAndReload(response);
         },
       });
     });

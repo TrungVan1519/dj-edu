@@ -136,25 +136,6 @@
 
     updateZingChart();
 
-    function alertMessage(message) {
-      // update alert
-      const alert = $(".alert");
-      alert.removeClass("d-none");
-      alert.children("span").text(message);
-      alert.children("button").click(function (e) {
-        e.preventDefault();
-
-        alert.children("span").text("");
-        alert.addClass("d-none");
-      });
-
-      // reload page automatically
-      setTimeout(function () {
-        alert.children("span").text("");
-        alert.addClass("d-none");
-      }, 5000);
-    }
-
     $("#btn-vote").click(function (e) {
       e.preventDefault();
 

@@ -11,3 +11,40 @@
     <span aria-hidden="true"><i class="fas fa-times-circle"></i></span>
   </button>
 </div>
+
+<script>
+  function alertMessageAndReload(message) {
+    // update alert
+    const alert = $(".alert");
+    alert.removeClass("d-none");
+    alert.children("span").text(message);
+    alert.children("button").click(function (e) {
+      e.preventDefault();
+      location.reload();
+    });
+
+    // reload page automatically
+    setTimeout(function () {
+      location.reload();
+    }, 5000);
+  }
+
+  function alertMessage(message) {
+    // update alert
+    const alert = $(".alert");
+    alert.removeClass("d-none");
+    alert.children("span").text(message);
+    alert.children("button").click(function (e) {
+      e.preventDefault();
+
+      alert.children("span").text("");
+      alert.addClass("d-none");
+    });
+
+    // reload page automatically
+    setTimeout(function () {
+      alert.children("span").text("");
+      alert.addClass("d-none");
+    }, 5000);
+  }
+</script>

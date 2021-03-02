@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import handler404
 
 from . import views
 
@@ -26,3 +27,5 @@ urlpatterns = [
     path('urlshorteners/', include('urlshorteners.urls')),
     path('', views.index, name='index'),
 ]
+
+handler404 = views.handle_404
