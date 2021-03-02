@@ -1,11 +1,11 @@
 {% extends 'layouts/base.html' %} 
 
 {% block content %}
-<div class="container-fluid">
+<div class="container-fluid mt-3">
   <div class="row">
     {% if questions|length > 0 %}
       {% for question in questions %}
-      <div class="col-md-6 my-3">
+      <div class="col-md-6 mt-3 wow animate__animated animate__fadeIn">
         <div class="card">
           <div class="card-body">
             <h3 class="card-text">{{ question.text }}</h3>

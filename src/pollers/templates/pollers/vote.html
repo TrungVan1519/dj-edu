@@ -1,14 +1,14 @@
 {% extends 'layouts/base.html' %} 
 
 {% block content %}
-<div class="container">
+<div class="container mt-3">
   <!-- Alert -->
   {% include 'reusables/alert.html' %}
   
   <h1 class="text-center">{{ question.text }}</h1>
 
   <div class="row">
-    <div class="col-md-6 my-3">
+    <div class="col-md-6 mt-3">
       <form>
         {% csrf_token %} 
         {% for choice in question.choice_set.all %}
@@ -39,7 +39,7 @@
         </button>
       </form>
     </div>
-    <div class="col-md-6 my-3">
+    <div class="col-md-6 mt-3">
       <ul class="list-group">
         {% for choice in question.choice_set.all %}
         <li class="list-group-item" data-choice-id="{{ choice.id }}">

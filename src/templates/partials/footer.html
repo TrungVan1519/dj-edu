@@ -1,6 +1,87 @@
-<footer>
-  <div class="text-center p-3 bg-dark text-white">
-    © 2021 Copyright:
-    <a class="text-white" href="/">DjangoEdu.com</a>
+<div class="container-fluid bg-dark text-white text-center">
+  <div class="row">
+    {% for i in '1234'|make_list %}
+    <div class="col-3 mt-3">
+      <div class="view overlay pointer-cursor z-depth-1-half">
+        <a
+          href="/static/img/footers/footer-{{forloop.counter}}.jpg"
+          data-fancybox="footer-img-gallery"
+          data-caption="footer-{{forloop.counter}}.jpg"
+        >
+          <img
+            src="/static/img/footers/footer-{{forloop.counter}}.jpg"
+            class="img-fluid"
+            alt="Footer Image"
+          />
+          <div class="mask rgba-white-light"></div>
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+
+    <div class="col-12 my-3">
+      <strong>© 2021 Copyright:</strong>
+      <a class="text-primary text-decoration-none" href="{% url 'index' %}">
+        <strong>DjangoEdu.com</strong></a
+      >
+    </div>
   </div>
-</footer>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const view = $(".view");
+    const footerImgGallery = $("[data-fancybox='footer-img-gallery']");
+    view.hover(
+      function (e) {
+        const imgFluid = $(this).children().children(".img-fluid");
+        gsap
+          .timeline()
+          .to(imgFluid, { duration: 0.5, scale: 1.1, opacity: 0.8 });
+      },
+      function (e) {
+        const imgFluid = $(this).children().children(".img-fluid");
+        gsap.timeline().to(imgFluid, { duration: 0.5, scale: 1, opacity: 1 });
+      }
+    );
+    footerImgGallery.fancybox({
+      loop: true,
+      gutter: 50,
+      preventCaptionOverlap: true,
+      arrows: true,
+      infobar: true,
+      toolbar: true,
+      buttons: [
+        "zoom",
+        "share",
+        "slideShow",
+        "fullScreen",
+        "download",
+        "thumbs",
+        "close",
+      ],
+      protect: true,
+      defaultType: "image",
+      animationEffect: "zoom",
+      animationDuration: 366,
+      zoomOpacity: "auto",
+      transitionEffect: "tube",
+      transitionDuration: 366,
+      fullScreen: {
+        autoStart: false,
+      },
+      touch: {
+        vertical: true, // Allow to drag content vertically
+        momentum: true, // Continue movement after releasing mouse/touch when panning
+      },
+      slideShow: {
+        autoStart: false,
+        speed: 2000,
+      },
+      thumbs: {
+        autoStart: true,
+      },
+      wheel: "auto",
+    });
+  });
+</script>

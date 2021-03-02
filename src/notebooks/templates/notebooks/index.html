@@ -1,7 +1,7 @@
 {% extends 'layouts/base.html' %} 
 
 {% block content %}
-<div class="container-fluid">
+<div class="container-fluid mt-3">
   <!-- Alert -->
   {% include 'reusables/alert.html' %}
 
@@ -18,8 +18,8 @@
   <!-- Button trigger modal -->
 
   <div class="table-responsive">
-    <table class="table table-bordered table-hover my-3">
-      <thead class="thead-dark">
+    <table class="table table-bordered table-hover mt-3">
+      <thead class="thead-dark wow animate__animated animate__fadeIn">
         <tr>
           <th scope="col">#</th>
           <th scope="col">Content</th>
@@ -29,7 +29,7 @@
       <tbody>
         {% if notes|length > 0 %}
           {% for note in notes %}
-          <tr>
+          <tr class="wow animate__animated animate__fadeIn">
             <th scope="row">{{ note.id }}</th>
             <td>{{ note.content | title }}</td>
             <td class="text-center">
