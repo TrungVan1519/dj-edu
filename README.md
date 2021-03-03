@@ -1,8 +1,8 @@
 # How to fix pylint-django error display message
 
-[** Solution **](https://stackoverflow.com/questions/65761250/pylint-django-raising-error-about-django-not-being-configured-when-thats-not-th "Solution")
+[Solution](https://stackoverflow.com/questions/65761250/pylint-django-raising-error-about-django-not-being-configured-when-thats-not-th "Solution")
 
-** `.vscode/settings.json` **
+`.vscode/settings.json`
 
 ```json
 {
