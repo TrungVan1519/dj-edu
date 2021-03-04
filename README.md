@@ -11,7 +11,7 @@
     "--load-plugins",
     "pylint_django",
     "pylint_django.checkers.migrations",
-    "--disable=C0114, C0115, W0222",
+    "--disable=C0114, C0115, C0116, W0222, W0511",
     "--disable=imported-auth-user",
     "--disable=invalid-name",
     "--disable=line-too-long",
@@ -19,4 +19,5 @@
     "--django-settings-module=djEdu.settings"
   ]
 }
+
 ```
